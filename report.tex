@@ -1,42 +1,123 @@
-\documentclass[11pt]{article}
+\documentclass[12pt, twocolumn]{article}
+\usepackage{natbib}
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{hyperref}
+\usepackage{setspace}
 \def\subsectionautorefname{section}
-\title{CMPUT 481 Final Project}
-\author{Brock Toews}
-\date{\today}
-\begin{document}
-\maketitle
-\begin{center}
-btoews
-
-1284088
-\end{center}
-\thispagestyle{empty}
-\pagebreak
+        \title{CMPUT 481 Final Project}
+        \author{Brock Toews}
+        \date{\today}
+        \begin{document}
+\twocolumn[{
+    \begin{@twocolumnfalse}
+        \maketitle
+        \begin{center}
+        btoews 1284088
+        \end{center}
+        \thispagestyle{empty}
+        \pagebreak
+    \end{@twocolumnfalse}
+}]
 \setcounter{page}{1}
-\listoffigures
-\tableofcontents
+\doublespacing
 \section{Introduction}
+In modern microprocessors, multiple cores has become ubiquitous. However, in the
+year \emph{The Case for a Single-Chip Multiprocessor} was written, this was not
+the case; it was written well before anyone could have predicted the current
+state of the microprocessor. This is what makes it such an interesting paper to
+read.
+
+The following paper will be analyzing this paper; its key points; its
+relationship to a well known, more modern paper's -- \emph{Web Search for a 
+Planet: The Google Cluster Architecture} -- relationship to it; and, its final
+results.
 \section{Overview}
 \subsection{Summary}
+As per its name, our paper has a fairly simple premise: showing that
+multiple processors is a better use of the area on a microprocessor die that a
+single superscalar processor. It does this by expositing, first, the two
+architectures it used for its experimentation, then the results of this
+experimentation.
 \subsection{Type of Paper}
+It is quite clear from the paper's structure, described above, that it is a
+research result paper. Interestingly enough, when reading the introduction it
+seemed as though it could end up being a position paper; it certainly could 
+have been one all on its own given just the first three sections being purely
+exposition.
 \section{Key Points}
 \subsection{Trend of the Microprocessor}
-\subsection{Diminishing Returns of the Superscalar Processor}
-\subsection{The Two Microarchitectures}
+The first issue of importance examined is that which drew my eye to the paper:
+where the microprocessor of the day was going. And, that direction was very
+different from the modern processor. The approach taken by contemporary
+architecture designers was that of a single very large core. 
+
+These dies, to most avail their single processor had extensive pipelining, 
+multi-issuing, and logic to reorder instructions in the most efficient pattern. 
+This became extremely cumbersome and, very quickly, had its returns diminish; 
+every incremental improvement in issue-width and better instruction reordering
+took increasingly more die space.
+\subsection{The Alternate Microarchitecture}
 %smaller but simpler cores
-\section{Relation to \emph{Web Search for a Planet}}
-\subsection{Diminishing Returns of Improving a Single Unit}
+Instead, what the writers of the paper proposed was to simplify the core. This
+allowed them to decrease the individual processors' size to well under a quarter
+of their larger counterparts, while increasing the clock speed. Each individual
+core only received a minor hit to its performance relative to the superscalar
+architecture. But, now, they were able to put four of these slightly inferior
+processors onto a single chip roughly equal in size to the larger chip.
+
 \subsection{Grain of Work}
-%single chip tolerates smaller grains than a cluster
+Multiprocessors of the day were limited purely to multi-chip clusters. What the
+authors found was that they had much better tolerance for fine-grained work
+owing to the massive speedups in interprocess communication over clusters of
+the day. In spite of this, they found that when the grain of their work became
+very fine, their multicore architecture performed slightly worse than a
+superscalar microprocessor.
+\section{Diminishing Returns}
+Much like the diminishing returns one receives trying to make a single core
+better and better instead of distributing the work to multiple inferior cores,
+Google experience the same problem with their servers. The authors of both
+papers would optimally try to make a single unit (processor or server) complete
+as much computation per unit of cost, where Google's cost is currency as opposed
+to die space.
+
+In the same way that one must make the area of a processor much larger to
+receive small performance gains, Google also found that they needed to spend
+much more money on a single server for it to be slightly more capable.
 \section{Experiment}
 \subsection{Setup}
+For their experiment, a simulation of two existing architectures was used. The
+first, a then modern superscalar processor, and four older processors, which could
+be scaled down owing to their smaller transistor counts, on a single chip. This
+simulation ran multiple real-world programs to get performance benchmarks.
 \subsection{Results}
+The authors found that on sequential execution using a single core of their
+hypothetical architecture versus the existing archecture performed only 10-30\%
+worse. Whereas when they were able to parallelize a program easily, their
+processor performed 50-100\% better.
+
+These results, at least for myself, seem to be in line with one's intuitive
+understanding of a multiprocessor.
 \section{Criticisms}
 %representative execution.
+I have very few qualms with this article. It excels when it comes to being fair
+in its comparison of multiprocessors to uniprocessors, and is thorough with its
+exposition without being long winded. It seems, however, that where it describes
+a heuristic it used to decrease the experiments' runtime, they may have biased
+the multiprocessor slightly.
+
+This heuristic is that of using a representative execution window -- only
+executing a portion of the program they are benchmarking. While they stated that
+it was accurate to within a percent the amount of work that would have been done
+throughout the rest of the program, it did not explicitly state that they
+accounted for the sequential parts of execution that are so harmful to parallel
+speedups.
 \section{Conclusion}
-\pagebreak
+With very few problems, I found the paper discussed above to be a very well
+written and informative piece on why one would use a multiprocessor over a
+uniprocessor. When one combines that with its being written before the
+widespread use of multiprocessors, it is quite a good read.
+\section{References}
+\bibliography{references}
 \end{document}
